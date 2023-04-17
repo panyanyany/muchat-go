@@ -1,0 +1,41 @@
+api_platform:
+  url:
+  slug:
+concurrency: 7
+listen: 0.0.0.0:8080
+censor_enabled: false
+open_ai_account:
+  query_interval: 5m
+  concurrency: 4
+guests:
+  - enabled: true
+    max_usage: 10
+    domain: localhost
+  - enabled: true
+    max_usage: 10
+    domain: ai6.top
+mock:
+  enabled: true
+  response: 正在调试中
+  free_of_charge: false
+gpt:
+  auto_pass: true
+  session_timeout: 60
+  max_tokens: 2048
+  model: text-davinci-003
+  temperature: 0.7
+  reply_prefix: 来自机器人回复：
+db:
+  host: 127.0.0.1
+  name: chatgpt
+  user: ubuntu
+  pass: ubuntu
+tencent_cos:
+  secret_id: ''
+  secret_key: ''
+  bucket_url: https://chatgpt-.cos.ap-guangzhou.myqcloud.com
+  ci_url: https://chatgpt-.ci.ap-guangzhou.myqcloud.com
+  service_url: https://service.cos.myqcloud.com
+baidu_ai:
+  app_key:
+  secret_key:

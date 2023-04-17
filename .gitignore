@@ -1,0 +1,10 @@
+.*
+!.gitignore
+*.log
+*.exe
+go_another_chatgpt
+输出*
+账户.txt
+题目.txt
+失败题目.txt
+dist
