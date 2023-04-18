@@ -3,7 +3,7 @@ api_platform:
   slug:
 concurrency: 7
 listen: 0.0.0.0:8080
-censor_enabled: false
+censor_enabled: true
 open_ai_account:
   query_interval: 5m
   concurrency: 4
@@ -15,7 +15,7 @@ guests:
     max_usage: 10
     domain: ai6.top
 mock:
-  enabled: true
+  enabled: false
   response: 正在调试中
   free_of_charge: false
 gpt:
