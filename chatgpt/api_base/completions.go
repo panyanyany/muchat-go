@@ -3,7 +3,7 @@ package api_base
 import (
     "encoding/json"
     "github.com/cihub/seelog"
-    "go_another_chatgpt/config"
+    "muchat-go/config"
 )
 
 const BASEURL = "https://api.openai.com/v1/"

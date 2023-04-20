@@ -2,7 +2,7 @@ package app
 
 import (
     "github.com/cihub/seelog"
-    "go_another_chatgpt/util/file_util"
+    "muchat-go/util/file_util"
 )
 
 type FailedThread struct {

@@ -3,10 +3,10 @@ package app
 import (
     "fmt"
     "github.com/cihub/seelog"
-    "go_another_chatgpt/chatgpt/api_base"
-    "go_another_chatgpt/config"
-    "go_another_chatgpt/models"
-    "go_another_chatgpt/repo/censor"
+    "muchat-go/chatgpt/api_base"
+    "muchat-go/config"
+    "muchat-go/models"
+    "muchat-go/repo/censor"
     "time"
 )
 

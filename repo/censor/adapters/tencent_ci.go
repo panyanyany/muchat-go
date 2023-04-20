@@ -6,7 +6,7 @@ import (
     "fmt"
     "github.com/cihub/seelog"
     "github.com/tencentyun/cos-go-sdk-v5"
-    "go_another_chatgpt/repo/censor"
+    "muchat-go/repo/censor"
     "net/http"
     "net/url"
 )

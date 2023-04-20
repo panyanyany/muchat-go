@@ -4,9 +4,9 @@ import (
     "encoding/json"
     "errors"
     "fmt"
-    "go_another_chatgpt/config"
-    "go_another_chatgpt/repo/expirymap"
     "log"
+    "muchat-go/config"
+    "muchat-go/repo/expirymap"
     "net/http"
     "time"
 )

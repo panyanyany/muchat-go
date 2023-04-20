@@ -2,8 +2,8 @@ package seelog_util
 
 import (
     "fmt"
-    "go_another_chatgpt/util/time_util"
     "io"
+    "muchat-go/util/time_util"
     "time"
 
     "github.com/cihub/seelog"

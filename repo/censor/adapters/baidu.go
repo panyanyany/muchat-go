@@ -4,7 +4,7 @@ import (
     "encoding/json"
     "fmt"
     baidu_censor "github.com/Baidu-AIP/golang-sdk/aip/censor"
-    "go_another_chatgpt/repo/censor"
+    "muchat-go/repo/censor"
 )
 
 type Baidu struct {

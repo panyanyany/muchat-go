@@ -1,4 +1,4 @@
-module go_another_chatgpt
+module muchat-go
 
 go 1.18
 

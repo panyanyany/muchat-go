@@ -3,7 +3,7 @@ package api_base
 import (
     "encoding/json"
     "github.com/cihub/seelog"
-    "go_another_chatgpt/config"
+    "muchat-go/config"
 )
 
 func ChatCompletions(ms []ChatMessage, apiKey string, cfg *config.Configuration, user string) (string, error) {

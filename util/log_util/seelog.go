@@ -2,7 +2,7 @@ package log_util
 
 import (
     "fmt"
-    "go_another_chatgpt/util/ip_util"
+    "muchat-go/util/ip_util"
     "os"
     "path"
 

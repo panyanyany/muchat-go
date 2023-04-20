@@ -2,9 +2,9 @@ package models
 
 import (
     "fmt"
-    "go_another_chatgpt/config"
     "gorm.io/driver/mysql"
     "gorm.io/gorm"
+    "muchat-go/config"
 )
 
 func InitDb(cfg config.DbConfig) *gorm.DB {
