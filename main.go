@@ -77,6 +77,12 @@ func main() {
             "message": "pong",
         })
     })
+    router.Any("/", func(c *gin.Context) {
+        c.JSON(http.StatusOK, gin.H{
+            "message":   "Welcome to Muchat",
+            "home_page": "https://github.com/panyanyany/muchat-aio",
+        })
+    })
     router.POST("/api/query", myController.HandleQuery)
     router.GET("/api/check", myController.HandleCheck)
     router.GET("/api/client/version", myController.HandleVersion)
