@@ -1,16 +1,16 @@
 api_platform:
   url:
   slug:
-concurrency: 7
+concurrency: 7            # 系统内向 ChatGPT 发送请求的最大并发数
 listen: 0.0.0.0:8080
-censor_enabled: true
+censor_enabled: true      # 是否启用敏感词过滤
 open_ai_account:
-  query_interval: 5m
-  concurrency: 4
-guests:
+  query_interval: 5m      # OpenAI 账户检查间隔
+  concurrency: 4          # 同时启用的 OpenAI 账户数量
+guests:                   # 游客模式
   - enabled: true
-    max_usage: 10
-    domain: localhost
+    max_usage: 10         # 每个游客（IP）最大使用次数，不会重置
+    domain: localhost     # 启用游戏模式的域名，不包含端口
   - enabled: true
     max_usage: 10
     domain: ai6.top
@@ -18,7 +18,7 @@ mock:
   enabled: false
   response: 正在调试中
   free_of_charge: false
-gpt:
+gpt:                      # GPT-3 配置，3.5开放之后不再使用
   auto_pass: true
   session_timeout: 60
   max_tokens: 2048
