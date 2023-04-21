@@ -27,7 +27,7 @@ gpt:                      # GPT-3 配置，3.5开放之后不再使用
   reply_prefix: 来自机器人回复：
 db:
   host: 127.0.0.1
-  name: chatgpt
+  name: muchat
   user: ubuntu
   pass: ubuntu
 tencent_cos:
