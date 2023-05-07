@@ -47,6 +47,11 @@ type ChatMessage struct {
     Content string `json:"content"`
 }
 
+type PresetPrompt struct {
+    Act    string `json:"act"`
+    Prompt string `json:"prompt"`
+}
+
 type ChatMessageResponseBody struct {
     ID      string `json:"id"`
     Object  string `json:"object"`

@@ -74,6 +74,11 @@ func (r *RunnerThread) DoJob(job *JobParam) {
         maxLen := 1500 // 3500最极限，但会导致回复很短，
         textCnt := 0
         messages2 := []api_base.ChatMessage{}
+
+        // 插入预设
+        if job.PresetPrompt != nil {
+            maxLen -= utf8_util.Len(job.PresetPrompt.Prompt)
+        }
         for _, m := range messages {
             curTextCnt := textCnt + utf8_util.Len(m.Content)
             if curTextCnt > maxLen {
@@ -87,6 +92,17 @@ func (r *RunnerThread) DoJob(job *JobParam) {
             messages2 = append(messages2, m)
         }
         messages = messages2
+
+        // 插入预设
+        if job.PresetPrompt != nil {
+            messages = append([]api_base.ChatMessage{
+                api_base.ChatMessage{
+                    Role:    "system",
+                    Content: job.PresetPrompt.Prompt,
+                },
+            }, messages...)
+        }
+
         bs, err := json.Marshal(messages)
         if err != nil {
             seelog.Errorf("json.Marshall messages failed: messages=%#v, err=%v", messages, err)

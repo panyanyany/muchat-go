@@ -27,6 +27,7 @@ type JobParam struct {
     EnqueueTime   time.Time
     DoneTime      time.Time
     Messages      []api_base.ChatMessage
+    PresetPrompt  *api_base.PresetPrompt
 }
 
 func (r *JobParam) GetIdStr() string {
@@ -55,15 +56,16 @@ func NewRunner(config *config.Configuration) (r *Runner) {
     return
 }
 
-func (r *Runner) AddJob(titleIndex int, title string, acc *models.OpenAiAccount, censor *censor.Censor, slug string, messages []api_base.ChatMessage) {
+func (r *Runner) AddJob(titleIndex int, title string, acc *models.OpenAiAccount, censor *censor.Censor, slug string, messages []api_base.ChatMessage, presetPrompt *api_base.PresetPrompt) {
     r.Jobs <- &JobParam{
-        Title:       title,
-        TitleIndex:  titleIndex,
-        Account:     acc,
-        Censor:      censor,
-        Slug:        slug,
-        EnqueueTime: time.Now(),
-        Messages:    messages,
+        Title:        title,
+        TitleIndex:   titleIndex,
+        Account:      acc,
+        Censor:       censor,
+        Slug:         slug,
+        EnqueueTime:  time.Now(),
+        Messages:     messages,
+        PresetPrompt: presetPrompt,
     }
 }
 

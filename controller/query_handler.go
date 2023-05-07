@@ -41,7 +41,7 @@ func (r *Controller) HandleQuery(c *gin.Context) {
         return
     }
 
-    r.Runner.AddJob(id, params.Question, acc, r.Censor, cur.User.Slug, params.Messages)
+    r.Runner.AddJob(id, params.Question, acc, r.Censor, cur.User.Slug, params.Messages, params.PresetPrompt)
     job := r.Runner.WaitForJob(id)
     if job == nil {
         seelog.Errorf("r.Runner.WaitForJob(id) returns nil, id=%v", id)
@@ -96,9 +96,10 @@ func (r *Controller) HandleQuery(c *gin.Context) {
 }
 
 type QueryParams struct {
-    Question string                 `json:"question"`
-    Slug     string                 `json:"slug"`
-    Messages []api_base.ChatMessage `json:"messages"`
+    Question     string                 `json:"question"`
+    Slug         string                 `json:"slug"`
+    Messages     []api_base.ChatMessage `json:"messages"`
+    PresetPrompt *api_base.PresetPrompt `json:"preset_prompt,omitempty"`
 }
 
 func (r *Controller) CheckInnerError(job *app.JobParam) {
