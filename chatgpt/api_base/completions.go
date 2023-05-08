@@ -6,7 +6,7 @@ import (
     "muchat-go/config"
 )
 
-const BASEURL = "https://api.openai.com/v1/"
+var BASEURL = "https://api.openai.com/v1/"
 
 // CompletionsResponseBody 请求体
 type CompletionsResponseBody struct {

@@ -5,6 +5,7 @@ import (
     "github.com/gin-contrib/cors"
     "github.com/gin-gonic/gin"
     "muchat-go/app"
+    "muchat-go/chatgpt/api_base"
     "muchat-go/chatgpt/client"
     "muchat-go/config"
     "muchat-go/controller"
@@ -27,6 +28,7 @@ func main() {
 
     cfg := config.LoadConfig()
     db := models.InitDb(cfg.Db)
+    api_base.BASEURL = cfg.ApiPlatform.BaseUrl
 
     // open ai
     openAiClient := client.NewClient(db)

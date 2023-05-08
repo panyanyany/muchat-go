@@ -25,8 +25,8 @@ type Configuration struct {
 }
 
 type ApiPlatform struct {
-    Url  string `json:"url" yaml:"url"`
-    Slug string `yaml:"slug"`
+    // 请求地址，默认为 https://api.openai.com/v1/
+    BaseUrl string `json:"base_url" yaml:"base_url"`
 }
 
 type OpenAiAccountConfig struct {
@@ -159,6 +159,10 @@ func LoadConfig() *Configuration {
         dbPort := os.Getenv("DB_PORT")
         if dbPort != "" {
             config.Db.Port = dbPort
+        }
+        baseUrl := os.Getenv("AP_BASE_URL")
+        if baseUrl != "" {
+            config.ApiPlatform.BaseUrl = baseUrl
         }
     })
 
