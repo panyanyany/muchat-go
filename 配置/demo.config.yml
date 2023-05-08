@@ -1,5 +1,5 @@
 api_platform:
-  base_url: https://api.openai.com/v1/
+  base_url: https://api.openai.com/v1/ # 中转接口
 concurrency: 7            # 系统内向 ChatGPT 发送请求的最大并发数
 listen: 0.0.0.0:8080
 censor_enabled: true      # 是否启用敏感词过滤
