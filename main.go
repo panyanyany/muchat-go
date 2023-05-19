@@ -28,7 +28,9 @@ func main() {
 
     cfg := config.LoadConfig()
     db := models.InitDb(cfg.Db)
-    api_base.BASEURL = cfg.ApiPlatform.BaseUrl
+    if cfg.ApiPlatform.BaseUrl != "" {
+        api_base.BASEURL = cfg.ApiPlatform.BaseUrl
+    }
 
     // open ai
     openAiClient := client.NewClient(db)
@@ -85,6 +87,7 @@ func main() {
             "home_page": "https://github.com/panyanyany/muchat-aio",
         })
     })
+    router.POST("/api/openai/v1/chat/completions", myController.HandleOpenaiChatCompletions)
     router.POST("/api/query", myController.HandleQuery)
     router.GET("/api/check", myController.HandleCheck)
     router.GET("/api/client/version", myController.HandleVersion)

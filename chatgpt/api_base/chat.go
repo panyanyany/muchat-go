@@ -1,8 +1,13 @@
 package api_base
 
 import (
+    "context"
     "encoding/json"
+    "errors"
+    "fmt"
     "github.com/cihub/seelog"
+    "github.com/sashabaranov/go-openai"
+    "io"
     "muchat-go/config"
 )
 
@@ -42,6 +47,55 @@ func ChatCompletions(ms []ChatMessage, apiKey string, cfg *config.Configuration,
     return reply, nil
 }
 
+type ChatCompletionsStreamResponseChunk struct {
+    Content openai.ChatCompletionStreamResponse
+    Error   error
+}
+
+func ChatCompletionsStream(ms []ChatMessage, apiKey string, chanResp chan ChatCompletionsStreamResponseChunk) {
+    c := openai.NewClient(apiKey)
+    ctx := context.Background()
+
+    var ms2 []openai.ChatCompletionMessage
+    for _, m := range ms {
+        ms2 = append(ms2, openai.ChatCompletionMessage{
+            Role:    m.Role,
+            Content: m.Content,
+        })
+    }
+
+    req := openai.ChatCompletionRequest{
+        Model:    openai.GPT3Dot5Turbo,
+        Messages: ms2,
+        Stream:   true,
+    }
+    stream, err := c.CreateChatCompletionStream(ctx, req)
+    if err != nil {
+        err = fmt.Errorf("ChatCompletionStream error: %v", err)
+        chanResp <- ChatCompletionsStreamResponseChunk{Error: err}
+        return
+    }
+    defer stream.Close()
+
+    for {
+        var response openai.ChatCompletionStreamResponse
+        response, err = stream.Recv()
+        if errors.Is(err, io.EOF) {
+            //seelog.Info("Stream finished")
+            close(chanResp)
+            return
+        }
+
+        if err != nil {
+            err = fmt.Errorf("stream error: %v", err)
+            chanResp <- ChatCompletionsStreamResponseChunk{Error: err}
+            return
+        }
+
+        chanResp <- ChatCompletionsStreamResponseChunk{Content: response}
+    }
+}
+
 type ChatMessage struct {
     Role    string `json:"role"`
     Content string `json:"content"`
@@ -69,4 +123,20 @@ type ChatMessageResponseBody struct {
         CompletionTokens int `json:"completion_tokens"`
         TotalTokens      int `json:"total_tokens"`
     } `json:"usage"`
+}
+
+type ChatCompletionsRequest struct {
+    Model    string        `json:"model"`
+    Messages []ChatMessage `json:"messages"`
+
+    Temperature      float32        `json:"temperature,omitempty"`
+    TopP             float32        `json:"top_p,omitempty"`
+    N                int            `json:"n,omitempty"`
+    Stream           bool           `json:"stream,omitempty"`
+    Stop             []string       `json:"stop,omitempty"`
+    MaxTokens        int            `json:"max_tokens,omitempty"`
+    PresencePenalty  float32        `json:"presence_penalty,omitempty"`
+    FrequencyPenalty float32        `json:"frequency_penalty,omitempty"`
+    LogitBias        map[string]int `json:"logit_bias,omitempty"`
+    User             string         `json:"user,omitempty"`
 }

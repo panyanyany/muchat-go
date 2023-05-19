@@ -11,7 +11,6 @@ import (
     "muchat-go/repo/censor"
     "muchat-go/repo/constants"
     "net/http"
-    "time"
 )
 
 type Controller struct {
@@ -50,44 +49,4 @@ func (r *Controller) HandleCheck(c *gin.Context) {
         }
     }
     c.JSON(http.StatusOK, resp)
-}
-
-func (r *Controller) CheckUser(c *gin.Context, slug string, ip string) (cur models.CheckUserResult) {
-    var existed bool
-    if slug != "" {
-        cur, existed = models.CheckUser(r.Db, slug)
-        return cur
-    }
-
-    guestCfg := r.Config.Guests.GetDomainConfig(c.GetHeader("referer"))
-    if guestCfg == nil || !guestCfg.Enabled {
-        return cur
-    }
-
-    slug = "ip-" + ip
-
-    cur, existed = models.CheckUser(r.Db, slug)
-    // 插入新用户
-    if !existed {
-        md := models.MuchatUser{
-            Slug:      slug,
-            FirstTime: time.Now(),
-            Usage:     0,
-            BadCnt:    0,
-            MaxUsage:  guestCfg.MaxUsage,
-            MaxDays:   1,
-            ExpiresAt: time.Now().Add(time.Hour * 24),
-            Name:      "",
-            FirstIp:   ip,
-        }
-        err := r.Db.Create(&md).Error
-        if err != nil {
-            seelog.Errorf("insert new ip user failed, err=%v, ip=%v", err, ip)
-            return
-        }
-        cur.User = &md
-        cur.Auth = true
-        cur.ReachCap = guestCfg.MaxUsage == 0 // 为了测试，会把 max_usage 设置为 0
-    }
-    return
 }
