@@ -9,6 +9,7 @@ import (
     "github.com/sashabaranov/go-openai"
     "io"
     "muchat-go/config"
+    "time"
 )
 
 func ChatCompletions(ms []ChatMessage, apiKey string, cfg *config.Configuration, user string) (string, error) {
@@ -52,6 +53,11 @@ type ChatCompletionsStreamResponseChunk struct {
     Error   error
 }
 
+type RecvResult struct {
+    Response openai.ChatCompletionStreamResponse
+    Error    error
+}
+
 func ChatCompletionsStream(ms []ChatMessage, apiKey string, chanResp chan ChatCompletionsStreamResponseChunk) {
     c := openai.NewClient(apiKey)
     ctx := context.Background()
@@ -78,8 +84,30 @@ func ChatCompletionsStream(ms []ChatMessage, apiKey string, chanResp chan ChatCo
     defer stream.Close()
 
     for {
+        recvCtx, _ := context.WithTimeout(ctx, time.Second*10)
+        chRes := make(chan *RecvResult)
+        go func() {
+            var res RecvResult
+            var err error
+            var resp openai.ChatCompletionStreamResponse
+            resp, err = stream.Recv()
+            res.Error = err
+            res.Response = resp
+            chRes <- &res
+        }()
+
         var response openai.ChatCompletionStreamResponse
-        response, err = stream.Recv()
+
+        select {
+        case res := <-chRes:
+            if res.Error != nil {
+                err = res.Error
+            } else {
+                response = res.Response
+            }
+        case <-recvCtx.Done():
+            err = fmt.Errorf("stream timeout: %v", recvCtx.Err())
+        }
         if errors.Is(err, io.EOF) {
             //seelog.Info("Stream finished")
             close(chanResp)

@@ -83,9 +83,8 @@ func (r *Controller) HandleOpenaiChatCompletions(c *gin.Context) {
     }
 
     // 发起请求
-    chanResp := make(chan api_base.ChatCompletionsStreamResponseChunk)
+    chanResp := make(chan api_base.ChatCompletionsStreamResponseChunk, 10) // 缓冲区大小为10，避免客户端的堵塞导致服务端也堵塞
 
-    go api_base.ChatCompletionsStream(messages, acc.ApiKey, chanResp)
     //go func() {
     //    s := []rune("尊敬的领导、亲爱的同仁们：尊敬的领导、亲爱的同仁们：")
     //    for i := 0; i < 10; i++ {
